@@ -20,7 +20,7 @@ st.set_page_config(page_title="Document AI", page_icon="✨", layout="centered")
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
-    * { font-family: 'Google Sans', sans-serif !important; }
+    
     header, footer { visibility: hidden; }
     .stApp { background-color: #131314; }
     .stChatInputContainer { padding-bottom: 20px !important; }
@@ -34,12 +34,16 @@ st.markdown("""
     .stChatInputContainer textarea { color: #E3E3E3 !important; font-size: 16px; }
     [data-testid="stChatMessage"] { background-color: transparent !important; border: none !important; }
     .gemini-greeting {
+        font-family: 'Google Sans', sans-serif !important;
         font-size: 56px; font-weight: 500;
         background: -webkit-linear-gradient(74deg, #4285F4 0, #9B72CB 9%, #D96570 20%, #D96570 24%, #9B72CB 35%, #4285F4 44%, #9B72CB 50%, #D96570 56%, #131314 75%, #131314 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         margin-bottom: -15px; line-height: 1.2;
     }
-    .gemini-subtext { font-size: 56px; font-weight: 500; color: #444746; line-height: 1.2; margin-top: 0; }
+    .gemini-subtext { 
+        font-family: 'Google Sans', sans-serif !important; 
+        font-size: 56px; font-weight: 500; color: #444746; line-height: 1.2; margin-top: 0; 
+    }
 </style>
 """, unsafe_allow_html=True)
 
