@@ -1,6 +1,6 @@
 # ==========================================
 # SQLITE WORKAROUND FOR STREAMLIT CLOUD
-# (Must be at the absolute top!)
+# (This must be at the very top!)
 # ==========================================
 __import__('pysqlite3')
 import sys
@@ -18,7 +18,29 @@ from google import genai
 st.set_page_config(page_title="Document AI", page_icon="✨", layout="centered")
 
 st.markdown("""
-
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
+    * { font-family: 'Google Sans', sans-serif !important; }
+    header, footer { visibility: hidden; }
+    .stApp { background-color: #131314; }
+    .stChatInputContainer { padding-bottom: 20px !important; }
+    .stChatInputContainer > div {
+        border-radius: 32px !important;
+        background-color: #1E1F20 !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        padding: 4px 10px;
+    }
+    .stChatInputContainer textarea { color: #E3E3E3 !important; font-size: 16px; }
+    [data-testid="stChatMessage"] { background-color: transparent !important; border: none !important; }
+    .gemini-greeting {
+        font-size: 56px; font-weight: 500;
+        background: -webkit-linear-gradient(74deg, #4285F4 0, #9B72CB 9%, #D96570 20%, #D96570 24%, #9B72CB 35%, #4285F4 44%, #9B72CB 50%, #D96570 56%, #131314 75%, #131314 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        margin-bottom: -15px; line-height: 1.2;
+    }
+    .gemini-subtext { font-size: 56px; font-weight: 500; color: #444746; line-height: 1.2; margin-top: 0; }
+</style>
 """, unsafe_allow_html=True)
 
 # --- Initialize Embeddings & ChromaDB ---
@@ -54,7 +76,7 @@ Question: {question}
 Answer:"""
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.6-flash",
         contents=prompt
     )
     return response.text
@@ -107,16 +129,16 @@ if uploaded_file is not None:
 # MAIN CHAT UI
 # ==========================================
 if len(st.session_state.chat_history) == 0:
-    st.markdown('Hello,', unsafe_allow_html=True)
-    st.markdown('How can I help with your PDF?', unsafe_allow_html=True)
+    st.markdown('<p class="gemini-greeting">Hello,</p>', unsafe_allow_html=True)
+    st.markdown('<p class="gemini-subtext">How can I help with your PDF?</p>', unsafe_allow_html=True)
 
 def render_user_bubble(text):
     st.markdown(f"""
-    
-        
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+        <div style="background-color: #282A2C; color: #E3E3E3; border-radius: 20px; padding: 12px 20px; max-width: 75%; font-size: 16px;">
             {text}
-        
-    
+        </div>
+    </div>
     """, unsafe_allow_html=True)
 
 # Render Chat History
