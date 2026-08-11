@@ -1,0 +1,6 @@
+streamlit
+PyPDF2
+sentence-transformers
+chromadb
+google-genai
+pysqlite3-binary
