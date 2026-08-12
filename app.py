@@ -20,7 +20,7 @@ st.set_page_config(page_title="Document AI", page_icon="✨", layout="centered")
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
-    * { font-family: 'Google Sans', sans-serif !important; }
+    
     header, footer { visibility: hidden; }
     .stApp { background-color: #131314; }
     .stChatInputContainer { padding-bottom: 20px !important; }
@@ -34,12 +34,16 @@ st.markdown("""
     .stChatInputContainer textarea { color: #E3E3E3 !important; font-size: 16px; }
     [data-testid="stChatMessage"] { background-color: transparent !important; border: none !important; }
     .gemini-greeting {
+        font-family: 'Google Sans', sans-serif !important;
         font-size: 56px; font-weight: 500;
         background: -webkit-linear-gradient(74deg, #4285F4 0, #9B72CB 9%, #D96570 20%, #D96570 24%, #9B72CB 35%, #4285F4 44%, #9B72CB 50%, #D96570 56%, #131314 75%, #131314 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         margin-bottom: -15px; line-height: 1.2;
     }
-    .gemini-subtext { font-size: 56px; font-weight: 500; color: #444746; line-height: 1.2; margin-top: 0; }
+    .gemini-subtext { 
+        font-family: 'Google Sans', sans-serif !important; 
+        font-size: 56px; font-weight: 500; color: #444746; line-height: 1.2; margin-top: 0; 
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -86,8 +90,15 @@ Answer:"""
 # ==========================================
 with st.sidebar:
     st.markdown("### ✨ Setup")
-    gemini_key = st.text_input("Enter Gemini API Key", type="password")
-    st.caption("Get a free key from [Google AI Studio](https://aistudio.google.com/)")
+    
+    # Check if the API key is safely stored in Streamlit Secrets
+    if "GEMINI_API_KEY" in st.secrets:
+        gemini_key = st.secrets["GEMINI_API_KEY"]
+        st.success("✅ API Key loaded securely!")
+    else:
+        # Fallback just in case the secret isn't set up yet
+        gemini_key = st.text_input("Enter Gemini API Key", type="password")
+        st.caption("Get a free key from [Google AI Studio](https://aistudio.google.com/)")
     
     st.markdown("---")
     uploaded_file = st.file_uploader("Upload a PDF", type="pdf")
@@ -156,7 +167,7 @@ for message in st.session_state.chat_history:
 # Chat Input
 if user_question := st.chat_input("Ask a question about your document..."):
     if not gemini_key:
-        st.error("Please enter your Gemini API Key in the sidebar first!")
+        st.error("Please enter your Gemini API Key in the sidebar or save it in Streamlit Secrets!")
     elif not uploaded_file:
         st.error("Please upload a PDF first!")
     else:
