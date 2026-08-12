@@ -21,7 +21,7 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
     
-    header, footer { visibility: hidden; }
+     footer { visibility: hidden; }
     .stApp { background-color: #131314; }
     .stChatInputContainer { padding-bottom: 20px !important; }
     .stChatInputContainer > div {
