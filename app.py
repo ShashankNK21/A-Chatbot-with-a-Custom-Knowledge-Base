@@ -15,7 +15,7 @@ from google import genai
 # ==========================================
 # 1. PAGE CONFIG
 # ==========================================
-st.set_page_config(page_title="Docurion | Document Companion", page_icon="🌾", layout="centered")
+st.set_page_config(page_title="Document | Document Companion", page_icon="📄", layout="centered")
 
 # ==========================================
 # 2. WARM WELLNESS THEME (CSS)
@@ -58,7 +58,7 @@ st.markdown("""
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-bottom: 6px;
+        margin-bottom: 22px;
     }
     .brand-mark-icon {
         width: 34px; height: 34px;
@@ -71,9 +71,6 @@ st.markdown("""
     .brand-title {
         font-family: 'Fraunces', serif;
         font-weight: 600; font-size: 19px; color: var(--text-primary);
-    }
-    .brand-subtitle {
-        font-size: 12.5px; color: var(--text-muted); margin-bottom: 22px; margin-left: 44px; margin-top: -4px;
     }
 
     .side-section-label {
@@ -158,26 +155,6 @@ st.markdown("""
     }
     .app-header-sub {
         font-size: 15px; color: var(--text-secondary); margin-top: 10px; font-weight: 400;
-    }
-
-    /* ---------- EMPTY STATE ---------- */
-    .empty-state {
-        text-align: center;
-        padding: 50px 20px 30px 20px;
-    }
-    .empty-state-icon {
-        width: 58px; height: 58px; border-radius: 18px;
-        background: var(--accent-soft);
-        border: 1px solid var(--border-subtle);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 26px; margin: 0 auto 20px auto;
-    }
-    .empty-state-title {
-        font-family: 'Fraunces', serif;
-        font-size: 22px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;
-    }
-    .empty-state-text {
-        font-size: 14.5px; color: var(--text-secondary); max-width: 380px; margin: 0 auto; line-height: 1.65;
     }
 
     /* ---------- CHAT ---------- */
@@ -283,10 +260,9 @@ Answer:"""
 with st.sidebar:
     st.markdown("""
     <div class="brand-mark">
-        <div class="brand-mark-icon">🌾</div>
-        <div class="brand-title">Docurion</div>
+        <div class="brand-mark-icon">📄</div>
+        <div class="brand-title">Document</div>
     </div>
-    <div class="brand-subtitle">Your calm document companion</div>
     """, unsafe_allow_html=True)
 
     st.markdown('<div class="side-section-label">API Configuration</div>', unsafe_allow_html=True)
@@ -344,19 +320,6 @@ st.markdown("""
     <p class="app-header-sub">Warm, grounded answers — sourced directly from your document.</p>
 </div>
 """, unsafe_allow_html=True)
-
-# ==========================================
-# EMPTY STATE
-# ==========================================
-if len(st.session_state.chat_history) == 0:
-    st.markdown("""
-    <div class="empty-state">
-        <div class="empty-state-icon">🌿</div>
-        <div class="empty-state-title">Take your time</div>
-        <p class="empty-state-text">Upload a PDF in the sidebar, then ask a question below.
-        Every answer stays close to your document, with sources you can check.</p>
-    </div>
-    """, unsafe_allow_html=True)
 
 def render_user_bubble(text):
     st.markdown(f"""
