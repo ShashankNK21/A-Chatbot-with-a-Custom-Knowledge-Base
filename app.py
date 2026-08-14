@@ -67,17 +67,6 @@ st.markdown("""
         color: var(--text-muted); margin: 22px 0 10px 0;
     }
 
-    section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {
-        background-color: var(--bg-elevated) !important;
-        border: 1.5px dashed var(--border-subtle) !important;
-        border-radius: 14px !important;
-    }
-    section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {
-        background-color: var(--accent-soft) !important;
-        color: var(--accent-hover) !important;
-        border: none !important;
-        border-radius: 8px !important;
-    }
     section[data-testid="stSidebar"] input[type="password"],
     section[data-testid="stSidebar"] input[type="text"] {
         background-color: var(--bg-elevated) !important;
@@ -270,11 +259,8 @@ with st.sidebar:
         gemini_key = st.text_input("Gemini API Key", type="password", placeholder="Enter your API key", label_visibility="collapsed")
         st.caption("Get a free key from [Google AI Studio](https://aistudio.google.com/)")
 
-    st.markdown('<div class="side-section-label">Document</div>', unsafe_allow_html=True)
-    sidebar_upload = st.file_uploader("Upload a PDF", type="pdf", label_visibility="collapsed", key="sidebar_uploader")
-    if sidebar_upload and sidebar_upload.name != active["processed_filename"]:
-        process_pdf(sidebar_upload)
     if active["processed_filename"]:
+        st.markdown('<div class="side-section-label">Document</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="file-chip">📄&nbsp; {active["processed_filename"]}</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="side-section-label">Session</div>', unsafe_allow_html=True)
@@ -347,6 +333,7 @@ if chat_submission:
         attached_file = chat_submission["files"][0]
         process_pdf(attached_file)
         st.toast(f"📄 {attached_file.name} uploaded and ready", icon="✅")
+        st.rerun()
 
     user_question = chat_submission.text
 
@@ -354,7 +341,7 @@ if chat_submission:
         if not gemini_key:
             st.error("Please enter your Gemini API Key in the sidebar or save it in Streamlit Secrets!")
         elif not active["processed_filename"]:
-            st.error("Please upload a PDF first — use the sidebar or the attach icon in the chat bar!")
+            st.error("Please upload a PDF first — tap the ＋ icon in the chat bar!")
         else:
             if active["title"] == "New chat":
                 active["title"] = user_question[:40] + ("…" if len(user_question) > 40 else "")
