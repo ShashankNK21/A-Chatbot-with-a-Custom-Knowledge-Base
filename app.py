@@ -15,27 +15,27 @@ from google import genai
 # ==========================================
 # 1. PAGE CONFIG
 # ==========================================
-st.set_page_config(page_title="Docurion | Document Intelligence", page_icon="📘", layout="centered")
+st.set_page_config(page_title="Docurion | Document Companion", page_icon="🌾", layout="centered")
 
 # ==========================================
-# 2. PROFESSIONAL THEME (CSS)
+# 2. WARM WELLNESS THEME (CSS)
 # ==========================================
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap');
 
     :root {
-        --bg-primary: #0B0D12;
-        --bg-secondary: #12151C;
-        --bg-elevated: #171B24;
-        --border-subtle: #232833;
-        --text-primary: #EDEFF3;
-        --text-secondary: #9BA3B0;
-        --text-muted: #626A78;
-        --accent: #4C7CF0;
-        --accent-soft: #1B2740;
-        --accent-hover: #6690FF;
-        --success: #34C77B;
+        --bg-primary: #F6F1E9;
+        --bg-secondary: #EFE8DA;
+        --bg-elevated: #FBF8F2;
+        --border-subtle: #E2D8C4;
+        --text-primary: #3A332A;
+        --text-secondary: #766B5C;
+        --text-muted: #A69C8A;
+        --accent: #B9713D;
+        --accent-soft: #F0DFC9;
+        --accent-hover: #A05F30;
+        --success: #7C8F6E;
     }
 
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
@@ -43,7 +43,7 @@ st.markdown("""
     footer, #MainMenu, header { visibility: hidden; }
 
     .stApp {
-        background: radial-gradient(circle at 20% 0%, #10131B 0%, #0B0D12 55%);
+        background-color: var(--bg-primary);
         color: var(--text-primary);
     }
 
@@ -62,14 +62,15 @@ st.markdown("""
     }
     .brand-mark-icon {
         width: 34px; height: 34px;
-        border-radius: 9px;
-        background: linear-gradient(135deg, var(--accent), #8A5CF6);
+        border-radius: 10px;
+        background: linear-gradient(135deg, #D9A867, var(--accent));
         display: flex; align-items: center; justify-content: center;
-        font-size: 17px;
-        box-shadow: 0 4px 14px rgba(76,124,240,0.35);
+        font-size: 16px;
+        box-shadow: 0 4px 12px rgba(185,113,61,0.25);
     }
     .brand-title {
-        font-weight: 700; font-size: 18px; color: var(--text-primary); letter-spacing: -0.01em;
+        font-family: 'Fraunces', serif;
+        font-weight: 600; font-size: 19px; color: var(--text-primary);
     }
     .brand-subtitle {
         font-size: 12.5px; color: var(--text-muted); margin-bottom: 22px; margin-left: 44px; margin-top: -4px;
@@ -82,8 +83,14 @@ st.markdown("""
 
     section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] {
         background-color: var(--bg-elevated) !important;
-        border: 1px dashed var(--border-subtle) !important;
-        border-radius: 12px !important;
+        border: 1.5px dashed var(--border-subtle) !important;
+        border-radius: 14px !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stFileUploaderDropzone"] button {
+        background-color: var(--accent-soft) !important;
+        color: var(--accent-hover) !important;
+        border: none !important;
+        border-radius: 8px !important;
     }
     section[data-testid="stSidebar"] input[type="password"],
     section[data-testid="stSidebar"] input[type="text"] {
@@ -95,11 +102,11 @@ st.markdown("""
 
     .status-pill {
         display: inline-flex; align-items: center; gap: 7px;
-        background-color: rgba(52,199,123,0.1);
-        border: 1px solid rgba(52,199,123,0.25);
+        background-color: #E9EFE4;
+        border: 1px solid #D4E0CB;
         color: var(--success);
         font-size: 13px; font-weight: 500;
-        padding: 7px 12px; border-radius: 8px;
+        padding: 8px 12px; border-radius: 10px;
         width: 100%; box-sizing: border-box;
     }
     .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
@@ -128,6 +135,7 @@ st.markdown("""
     section[data-testid="stSidebar"] .stButton button:hover {
         border-color: var(--accent);
         color: var(--accent-hover);
+        background-color: var(--accent-soft);
     }
 
     hr, section[data-testid="stSidebar"] hr { border-color: var(--border-subtle) !important; }
@@ -135,18 +143,18 @@ st.markdown("""
     /* ---------- MAIN HEADER ---------- */
     .app-header {
         text-align: center;
-        padding: 38px 0 28px 0;
+        padding: 40px 0 30px 0;
         border-bottom: 1px solid var(--border-subtle);
         margin-bottom: 30px;
     }
     .app-header-eyebrow {
         font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-        color: var(--accent-hover); margin-bottom: 10px;
+        color: var(--accent); margin-bottom: 10px;
     }
     .app-header-title {
-        font-family: 'Source Serif 4', serif;
-        font-size: 38px; font-weight: 600; color: var(--text-primary);
-        margin: 0; letter-spacing: -0.01em;
+        font-family: 'Fraunces', serif;
+        font-size: 40px; font-weight: 600; color: var(--text-primary);
+        margin: 0;
     }
     .app-header-sub {
         font-size: 15px; color: var(--text-secondary); margin-top: 10px; font-weight: 400;
@@ -158,17 +166,18 @@ st.markdown("""
         padding: 50px 20px 30px 20px;
     }
     .empty-state-icon {
-        width: 56px; height: 56px; border-radius: 16px;
-        background: linear-gradient(135deg, var(--accent-soft), rgba(138,92,246,0.12));
+        width: 58px; height: 58px; border-radius: 18px;
+        background: var(--accent-soft);
         border: 1px solid var(--border-subtle);
         display: flex; align-items: center; justify-content: center;
         font-size: 26px; margin: 0 auto 20px auto;
     }
     .empty-state-title {
-        font-size: 21px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;
+        font-family: 'Fraunces', serif;
+        font-size: 22px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;
     }
     .empty-state-text {
-        font-size: 14.5px; color: var(--text-muted); max-width: 380px; margin: 0 auto; line-height: 1.6;
+        font-size: 14.5px; color: var(--text-secondary); max-width: 380px; margin: 0 auto; line-height: 1.65;
     }
 
     /* ---------- CHAT ---------- */
@@ -177,11 +186,12 @@ st.markdown("""
     .msg-card {
         background-color: var(--bg-elevated);
         border: 1px solid var(--border-subtle);
-        border-radius: 14px;
-        padding: 16px 18px;
+        border-radius: 16px;
+        padding: 16px 19px;
         font-size: 15px;
-        line-height: 1.65;
+        line-height: 1.7;
         color: var(--text-primary);
+        box-shadow: 0 2px 10px rgba(58,51,42,0.05);
     }
 
     .source-card {
@@ -210,10 +220,10 @@ st.markdown("""
     /* ---------- CHAT INPUT ---------- */
     .stChatInputContainer { padding-bottom: 24px !important; }
     .stChatInputContainer > div {
-        border-radius: 16px !important;
+        border-radius: 18px !important;
         background-color: var(--bg-elevated) !important;
         border: 1px solid var(--border-subtle) !important;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+        box-shadow: 0 6px 20px rgba(58,51,42,0.08) !important;
         padding: 6px 8px;
     }
     .stChatInputContainer textarea {
@@ -273,10 +283,10 @@ Answer:"""
 with st.sidebar:
     st.markdown("""
     <div class="brand-mark">
-        <div class="brand-mark-icon">📘</div>
+        <div class="brand-mark-icon">🌾</div>
         <div class="brand-title">Docurion</div>
     </div>
-    <div class="brand-subtitle">Document Intelligence Workspace</div>
+    <div class="brand-subtitle">Your calm document companion</div>
     """, unsafe_allow_html=True)
 
     st.markdown('<div class="side-section-label">API Configuration</div>', unsafe_allow_html=True)
@@ -329,9 +339,9 @@ if uploaded_file is not None:
 # ==========================================
 st.markdown("""
 <div class="app-header">
-    <div class="app-header-eyebrow">Document Intelligence</div>
-    <p class="app-header-title">Ask anything about your document</p>
-    <p class="app-header-sub">Grounded answers, sourced directly from the PDF you upload.</p>
+    <div class="app-header-eyebrow">Document Companion</div>
+    <p class="app-header-title">Ask, and read with ease</p>
+    <p class="app-header-sub">Warm, grounded answers — sourced directly from your document.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -341,17 +351,17 @@ st.markdown("""
 if len(st.session_state.chat_history) == 0:
     st.markdown("""
     <div class="empty-state">
-        <div class="empty-state-icon">✦</div>
-        <div class="empty-state-title">Ready when you are</div>
+        <div class="empty-state-icon">🌿</div>
+        <div class="empty-state-title">Take your time</div>
         <p class="empty-state-text">Upload a PDF in the sidebar, then ask a question below.
-        Every answer is drawn strictly from your document, with sources you can verify.</p>
+        Every answer stays close to your document, with sources you can check.</p>
     </div>
     """, unsafe_allow_html=True)
 
 def render_user_bubble(text):
     st.markdown(f"""
     <div style="display: flex; justify-content: flex-end; margin-bottom: 18px;">
-        <div style="background-color: #1B2740; color: #DCE4FF; border: 1px solid #29365C; border-radius: 16px 16px 4px 16px; padding: 12px 18px; max-width: 78%; font-size: 15px; line-height: 1.55;">
+        <div style="background-color: #F0DFC9; color: #4A3A24; border: 1px solid #E2C79E; border-radius: 18px 18px 4px 18px; padding: 12px 18px; max-width: 78%; font-size: 15px; line-height: 1.6;">
             {text}
         </div>
     </div>
