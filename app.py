@@ -11,6 +11,7 @@ import PyPDF2
 from sentence_transformers import SentenceTransformer
 import chromadb
 from google import genai
+import uuid
 
 # ==========================================
 # 1. PAGE CONFIG
@@ -128,11 +129,20 @@ st.markdown("""
         font-size: 14px;
         padding: 9px 0;
         transition: all 0.15s ease;
+        text-align: left;
     }
     section[data-testid="stSidebar"] .stButton button:hover {
         border-color: var(--accent);
         color: var(--accent-hover);
         background-color: var(--accent-soft);
+    }
+
+    /* Active history item */
+    section[data-testid="stSidebar"] .history-active button {
+        border-color: var(--accent) !important;
+        background-color: var(--accent-soft) !important;
+        color: var(--accent-hover) !important;
+        font-weight: 600;
     }
 
     hr, section[data-testid="stSidebar"] hr { border-color: var(--border-subtle) !important; }
@@ -194,20 +204,24 @@ st.markdown("""
         border: none !important;
     }
 
-    /* ---------- CHAT INPUT ---------- */
+    /* ---------- CHAT INPUT (with attach button) ---------- */
     .stChatInputContainer { padding-bottom: 24px !important; }
-    .stChatInputContainer > div {
+    [data-testid="stChatInput"] {
         border-radius: 18px !important;
         background-color: var(--bg-elevated) !important;
         border: 1px solid var(--border-subtle) !important;
         box-shadow: 0 6px 20px rgba(58,51,42,0.08) !important;
-        padding: 6px 8px;
     }
-    .stChatInputContainer textarea {
+    [data-testid="stChatInput"] textarea {
         color: var(--text-primary) !important;
         font-size: 15.5px !important;
     }
-    .stChatInputContainer textarea::placeholder { color: var(--text-muted) !important; }
+    [data-testid="stChatInput"] textarea::placeholder { color: var(--text-muted) !important; }
+    [data-testid="stChatInputSubmitButton"] {
+        background-color: var(--accent) !important;
+        border-radius: 10px !important;
+    }
+    [data-testid="stChatInput"] button svg { color: var(--text-secondary) !important; }
 
     div[data-testid="stAlert"] {
         border-radius: 10px !important;
@@ -255,6 +269,51 @@ Answer:"""
     return response.text
 
 # ==========================================
+# SESSION / HISTORY STATE
+# ==========================================
+def new_session():
+    return {
+        "id": str(uuid.uuid4()),
+        "title": "New chat",
+        "chat_history": [],
+        "processed_filename": None,
+    }
+
+if "sessions" not in st.session_state:
+    st.session_state.sessions = [new_session()]
+    st.session_state.active_session_id = st.session_state.sessions[0]["id"]
+
+def get_active_session():
+    for s in st.session_state.sessions:
+        if s["id"] == st.session_state.active_session_id:
+            return s
+    return st.session_state.sessions[0]
+
+active = get_active_session()
+
+# --- Process PDF into the vector store ---
+def chunk_text(text, chunk_size=800, chunk_overlap=150):
+    chunks, start = [], 0
+    while start < len(text):
+        chunks.append(text[start:start + chunk_size])
+        start += chunk_size - chunk_overlap
+    return chunks
+
+def process_pdf(file):
+    with st.spinner("Processing document..."):
+        reader = PyPDF2.PdfReader(file)
+        full_text = "".join(page.extract_text() or "" for page in reader.pages)
+        chunks = chunk_text(full_text)
+
+        existing = collection.get()
+        if existing['ids']:
+            collection.delete(ids=existing['ids'])
+
+        ids = [f"{file.name}_chunk_{i}" for i in range(len(chunks))]
+        collection.add(ids=ids, embeddings=embedder.encode(chunks).tolist(), documents=chunks)
+        active["processed_filename"] = file.name
+
+# ==========================================
 # SIDEBAR
 # ==========================================
 with st.sidebar:
@@ -275,40 +334,30 @@ with st.sidebar:
         st.caption("Get a free key from [Google AI Studio](https://aistudio.google.com/)")
 
     st.markdown('<div class="side-section-label">Document</div>', unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("Upload a PDF", type="pdf", label_visibility="collapsed")
-    if uploaded_file:
-        st.markdown(f'<div class="file-chip">📄&nbsp; {uploaded_file.name}</div>', unsafe_allow_html=True)
+    sidebar_upload = st.file_uploader("Upload a PDF", type="pdf", label_visibility="collapsed", key="sidebar_uploader")
+    if sidebar_upload and sidebar_upload.name != active["processed_filename"]:
+        process_pdf(sidebar_upload)
+    if active["processed_filename"]:
+        st.markdown(f'<div class="file-chip">📄&nbsp; {active["processed_filename"]}</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="side-section-label">Session</div>', unsafe_allow_html=True)
     if st.button("＋  New Chat", use_container_width=True):
-        st.session_state.chat_history = []
+        st.session_state.sessions.insert(0, new_session())
+        st.session_state.active_session_id = st.session_state.sessions[0]["id"]
         st.rerun()
 
-# --- Initialize Session State ---
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
-
-# --- Process PDF ---
-def chunk_text(text, chunk_size=800, chunk_overlap=150):
-    chunks, start = [], 0
-    while start < len(text):
-        chunks.append(text[start:start + chunk_size])
-        start += chunk_size - chunk_overlap
-    return chunks
-
-if uploaded_file is not None:
-    if "processed_filename" not in st.session_state or st.session_state.processed_filename != uploaded_file.name:
-        with st.spinner("Processing document..."):
-            reader = PyPDF2.PdfReader(uploaded_file)
-            full_text = "".join(page.extract_text() or "" for page in reader.pages)
-            chunks = chunk_text(full_text)
-
-            existing = collection.get()
-            if existing['ids']: collection.delete(ids=existing['ids'])
-
-            ids = [f"{uploaded_file.name}_chunk_{i}" for i in range(len(chunks))]
-            collection.add(ids=ids, embeddings=embedder.encode(chunks).tolist(), documents=chunks)
-            st.session_state.processed_filename = uploaded_file.name
+    st.markdown('<div class="side-section-label">History</div>', unsafe_allow_html=True)
+    if len(st.session_state.sessions) == 0:
+        st.caption("No previous chats yet.")
+    for s in st.session_state.sessions:
+        label = s["title"] if s["title"] else "New chat"
+        is_active = s["id"] == active["id"]
+        wrapper_class = "history-active" if is_active else ""
+        st.markdown(f'<div class="{wrapper_class}">', unsafe_allow_html=True)
+        if st.button(f"💬  {label}", key=f"hist_{s['id']}", use_container_width=True):
+            st.session_state.active_session_id = s["id"]
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # ==========================================
 # MAIN HEADER
@@ -341,31 +390,20 @@ def render_assistant_bubble(text, sources=None):
             for chunk in sources:
                 st.markdown(f'<div class="source-card">{chunk}</div>', unsafe_allow_html=True)
 
-# Render Chat History
-for message in st.session_state.chat_history:
+# Render Chat History for the active session
+for message in active["chat_history"]:
     if message["role"] == "user":
         render_user_bubble(message["content"])
     else:
         render_assistant_bubble(message["content"], message.get("sources"))
 
-# Chat Input
-if user_question := st.chat_input("Ask a question about your document..."):
-    if not gemini_key:
-        st.error("Please enter your Gemini API Key in the sidebar or save it in Streamlit Secrets!")
-    elif not uploaded_file:
-        st.error("Please upload a PDF first!")
-    else:
-        render_user_bubble(user_question)
+# ==========================================
+# CHAT INPUT (text + inline PDF attach button)
+# ==========================================
+chat_submission = st.chat_input(
+    "Ask a question about your document...",
+    accept_file="single",
+    file_type=["pdf"],
+)
 
-        retrieved_chunks = collection.query(
-            query_embeddings=embedder.encode([user_question]).tolist(),
-            n_results=3
-        )['documents'][0]
-
-        with st.spinner("Generating answer..."):
-            answer = ask_gemini(user_question, retrieved_chunks, gemini_key)
-
-        render_assistant_bubble(answer, retrieved_chunks)
-
-        st.session_state.chat_history.append({"role": "user", "content": user_question})
-        st.session_state.chat_history.append({"role": "assistant", "content": answer, "sources": retrieved_chunks})
+if
