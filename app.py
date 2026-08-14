@@ -333,9 +333,12 @@ for message in active["chat_history"]:
     else:
         render_assistant_bubble(message["content"], message.get("sources"))
 
+# ==========================================
+# CHAT INPUT (text + inline PDF attach button)
+# ==========================================
 chat_submission = st.chat_input(
     "Ask a question about your document...",
-    accept_file="single",
+    accept_file=True,
     file_type=["pdf"],
 )
 
