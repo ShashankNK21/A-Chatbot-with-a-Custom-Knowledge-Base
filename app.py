@@ -40,7 +40,6 @@ st.markdown("""
     }
 
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
-
     footer, #MainMenu, header { visibility: hidden; }
 
     .stApp {
@@ -48,31 +47,20 @@ st.markdown("""
         color: var(--text-primary);
     }
 
-    /* ---------- SIDEBAR ---------- */
     section[data-testid="stSidebar"] {
         background-color: var(--bg-secondary);
         border-right: 1px solid var(--border-subtle);
     }
     section[data-testid="stSidebar"] .block-container { padding-top: 2rem; }
 
-    .brand-mark {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 22px;
-    }
+    .brand-mark { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
     .brand-mark-icon {
-        width: 34px; height: 34px;
-        border-radius: 10px;
+        width: 34px; height: 34px; border-radius: 10px;
         background: linear-gradient(135deg, #D9A867, var(--accent));
         display: flex; align-items: center; justify-content: center;
-        font-size: 16px;
-        box-shadow: 0 4px 12px rgba(185,113,61,0.25);
+        font-size: 16px; box-shadow: 0 4px 12px rgba(185,113,61,0.25);
     }
-    .brand-title {
-        font-family: 'Fraunces', serif;
-        font-weight: 600; font-size: 19px; color: var(--text-primary);
-    }
+    .brand-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 19px; color: var(--text-primary); }
 
     .side-section-label {
         font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
@@ -100,44 +88,29 @@ st.markdown("""
 
     .status-pill {
         display: inline-flex; align-items: center; gap: 7px;
-        background-color: #E9EFE4;
-        border: 1px solid #D4E0CB;
-        color: var(--success);
-        font-size: 13px; font-weight: 500;
-        padding: 8px 12px; border-radius: 10px;
+        background-color: #E9EFE4; border: 1px solid #D4E0CB; color: var(--success);
+        font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 10px;
         width: 100%; box-sizing: border-box;
     }
     .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
 
     .file-chip {
         display: flex; align-items: center; gap: 8px;
-        background-color: var(--bg-elevated);
-        border: 1px solid var(--border-subtle);
-        border-radius: 10px;
-        padding: 10px 12px;
-        font-size: 13.5px;
-        color: var(--text-secondary);
-        margin-top: 4px;
+        background-color: var(--bg-elevated); border: 1px solid var(--border-subtle);
+        border-radius: 10px; padding: 10px 12px; font-size: 13.5px;
+        color: var(--text-secondary); margin-top: 4px;
     }
 
     section[data-testid="stSidebar"] .stButton button {
-        background-color: var(--bg-elevated);
-        color: var(--text-primary);
-        border: 1px solid var(--border-subtle);
-        border-radius: 10px;
-        font-weight: 500;
-        font-size: 14px;
-        padding: 9px 0;
-        transition: all 0.15s ease;
-        text-align: left;
+        background-color: var(--bg-elevated); color: var(--text-primary);
+        border: 1px solid var(--border-subtle); border-radius: 10px;
+        font-weight: 500; font-size: 14px; padding: 9px 0;
+        transition: all 0.15s ease; text-align: left;
     }
     section[data-testid="stSidebar"] .stButton button:hover {
-        border-color: var(--accent);
-        color: var(--accent-hover);
-        background-color: var(--accent-soft);
+        border-color: var(--accent); color: var(--accent-hover); background-color: var(--accent-soft);
     }
 
-    /* Active history item */
     section[data-testid="stSidebar"] .history-active button {
         border-color: var(--accent) !important;
         background-color: var(--accent-soft) !important;
@@ -147,64 +120,37 @@ st.markdown("""
 
     hr, section[data-testid="stSidebar"] hr { border-color: var(--border-subtle) !important; }
 
-    /* ---------- MAIN HEADER ---------- */
     .app-header {
-        text-align: center;
-        padding: 40px 0 30px 0;
-        border-bottom: 1px solid var(--border-subtle);
-        margin-bottom: 30px;
+        text-align: center; padding: 40px 0 30px 0;
+        border-bottom: 1px solid var(--border-subtle); margin-bottom: 30px;
     }
     .app-header-eyebrow {
         font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
         color: var(--accent); margin-bottom: 10px;
     }
-    .app-header-title {
-        font-family: 'Fraunces', serif;
-        font-size: 40px; font-weight: 600; color: var(--text-primary);
-        margin: 0;
-    }
-    .app-header-sub {
-        font-size: 15px; color: var(--text-secondary); margin-top: 10px; font-weight: 400;
-    }
+    .app-header-title { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 600; color: var(--text-primary); margin: 0; }
+    .app-header-sub { font-size: 15px; color: var(--text-secondary); margin-top: 10px; font-weight: 400; }
 
-    /* ---------- CHAT ---------- */
     [data-testid="stChatMessage"] { background-color: transparent !important; border: none !important; padding: 4px 0 !important; }
 
     .msg-card {
-        background-color: var(--bg-elevated);
-        border: 1px solid var(--border-subtle);
-        border-radius: 16px;
-        padding: 16px 19px;
-        font-size: 15px;
-        line-height: 1.7;
-        color: var(--text-primary);
-        box-shadow: 0 2px 10px rgba(58,51,42,0.05);
+        background-color: var(--bg-elevated); border: 1px solid var(--border-subtle);
+        border-radius: 16px; padding: 16px 19px; font-size: 15px; line-height: 1.7;
+        color: var(--text-primary); box-shadow: 0 2px 10px rgba(58,51,42,0.05);
     }
 
     .source-card {
-        background-color: var(--bg-secondary);
-        border: 1px solid var(--border-subtle);
-        border-left: 3px solid var(--accent);
-        border-radius: 8px;
-        padding: 10px 13px;
-        font-size: 13px;
-        color: var(--text-secondary);
-        margin-bottom: 8px;
-        line-height: 1.55;
+        background-color: var(--bg-secondary); border: 1px solid var(--border-subtle);
+        border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 13px;
+        font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.55;
     }
 
     .streamlit-expanderHeader {
-        background-color: transparent !important;
-        color: var(--text-muted) !important;
-        font-size: 13px !important;
-        font-weight: 500 !important;
+        background-color: transparent !important; color: var(--text-muted) !important;
+        font-size: 13px !important; font-weight: 500 !important;
     }
-    .streamlit-expanderContent {
-        background-color: transparent !important;
-        border: none !important;
-    }
+    .streamlit-expanderContent { background-color: transparent !important; border: none !important; }
 
-    /* ---------- CHAT INPUT (with attach button) ---------- */
     .stChatInputContainer { padding-bottom: 24px !important; }
     [data-testid="stChatInput"] {
         border-radius: 18px !important;
@@ -212,21 +158,12 @@ st.markdown("""
         border: 1px solid var(--border-subtle) !important;
         box-shadow: 0 6px 20px rgba(58,51,42,0.08) !important;
     }
-    [data-testid="stChatInput"] textarea {
-        color: var(--text-primary) !important;
-        font-size: 15.5px !important;
-    }
+    [data-testid="stChatInput"] textarea { color: var(--text-primary) !important; font-size: 15.5px !important; }
     [data-testid="stChatInput"] textarea::placeholder { color: var(--text-muted) !important; }
-    [data-testid="stChatInputSubmitButton"] {
-        background-color: var(--accent) !important;
-        border-radius: 10px !important;
-    }
+    [data-testid="stChatInputSubmitButton"] { background-color: var(--accent) !important; border-radius: 10px !important; }
     [data-testid="stChatInput"] button svg { color: var(--text-secondary) !important; }
 
-    div[data-testid="stAlert"] {
-        border-radius: 10px !important;
-        font-size: 14px !important;
-    }
+    div[data-testid="stAlert"] { border-radius: 10px !important; font-size: 14px !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -390,20 +327,46 @@ def render_assistant_bubble(text, sources=None):
             for chunk in sources:
                 st.markdown(f'<div class="source-card">{chunk}</div>', unsafe_allow_html=True)
 
-# Render Chat History for the active session
 for message in active["chat_history"]:
     if message["role"] == "user":
         render_user_bubble(message["content"])
     else:
         render_assistant_bubble(message["content"], message.get("sources"))
 
-# ==========================================
-# CHAT INPUT (text + inline PDF attach button)
-# ==========================================
 chat_submission = st.chat_input(
     "Ask a question about your document...",
     accept_file="single",
     file_type=["pdf"],
 )
 
-if
+if chat_submission:
+    if chat_submission["files"]:
+        attached_file = chat_submission["files"][0]
+        process_pdf(attached_file)
+        st.toast(f"📄 {attached_file.name} uploaded and ready", icon="✅")
+
+    user_question = chat_submission.text
+
+    if user_question:
+        if not gemini_key:
+            st.error("Please enter your Gemini API Key in the sidebar or save it in Streamlit Secrets!")
+        elif not active["processed_filename"]:
+            st.error("Please upload a PDF first — use the sidebar or the attach icon in the chat bar!")
+        else:
+            if active["title"] == "New chat":
+                active["title"] = user_question[:40] + ("…" if len(user_question) > 40 else "")
+
+            render_user_bubble(user_question)
+
+            retrieved_chunks = collection.query(
+                query_embeddings=embedder.encode([user_question]).tolist(),
+                n_results=3
+            )['documents'][0]
+
+            with st.spinner("Generating answer..."):
+                answer = ask_gemini(user_question, retrieved_chunks, gemini_key)
+
+            render_assistant_bubble(answer, retrieved_chunks)
+
+            active["chat_history"].append({"role": "user", "content": user_question})
+            active["chat_history"].append({"role": "assistant", "content": answer, "sources": retrieved_chunks})
