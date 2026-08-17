@@ -140,17 +140,40 @@ st.markdown("""
     }
     .streamlit-expanderContent { background-color: transparent !important; border: none !important; }
 
-    .stChatInputContainer { padding-bottom: 24px !important; }
-    [data-testid="stChatInput"] {
+    /* Force the entire fixed bottom bar (Streamlit's own wrapper) to match the cream theme */
+    section[data-testid="stBottom"],
+    div[data-testid="stBottomBlockContainer"],
+    .stChatInputContainer,
+    [data-testid="stChatInputContainer"] {
+        background-color: var(--bg-primary) !important;
+    }
+    .stChatInputContainer { padding-bottom: 24px !important; padding-top: 14px !important; }
+
+    [data-testid="stChatInput"],
+    [data-testid="stChatInput"] > div {
         border-radius: 18px !important;
         background-color: var(--bg-elevated) !important;
-        border: 1px solid var(--border-subtle) !important;
-        box-shadow: 0 6px 20px rgba(58,51,42,0.08) !important;
+        border: 1.5px solid var(--border-subtle) !important;
+        box-shadow: 0 6px 20px rgba(58,51,42,0.1) !important;
     }
-    [data-testid="stChatInput"] textarea { color: var(--text-primary) !important; font-size: 15.5px !important; }
-    [data-testid="stChatInput"] textarea::placeholder { color: var(--text-muted) !important; }
-    [data-testid="stChatInputSubmitButton"] { background-color: var(--accent) !important; border-radius: 10px !important; }
+    [data-testid="stChatInput"] textarea,
+    [data-testid="stChatInputTextArea"] {
+        color: var(--text-primary) !important;
+        font-size: 15.5px !important;
+        caret-color: var(--accent) !important;
+    }
+    [data-testid="stChatInput"] textarea::placeholder,
+    [data-testid="stChatInputTextArea"]::placeholder {
+        color: var(--text-secondary) !important;
+        opacity: 1 !important;
+    }
+    [data-testid="stChatInputSubmitButton"] {
+        background-color: var(--accent) !important;
+        border-radius: 10px !important;
+    }
+    [data-testid="stChatInputSubmitButton"] svg { color: var(--bg-elevated) !important; }
     [data-testid="stChatInput"] button svg { color: var(--text-secondary) !important; }
+    [data-testid="stChatInput"] [data-testid="stChatInputFileAttachButton"] svg { color: var(--text-secondary) !important; }
 
     div[data-testid="stAlert"] { border-radius: 10px !important; font-size: 14px !important; }
 </style>
