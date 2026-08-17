@@ -348,15 +348,19 @@ if chat_submission:
 
             render_user_bubble(user_question)
 
-            retrieved_chunks = collection.query(
-                query_embeddings=embedder.encode([user_question]).tolist(),
-                n_results=3
-            )['documents'][0]
+            try:
+                retrieved_chunks = collection.query(
+                    query_embeddings=embedder.encode([user_question]).tolist(),
+                    n_results=3
+                )['documents'][0]
 
-            with st.spinner("Generating answer..."):
-                answer = ask_gemini(user_question, retrieved_chunks, gemini_key)
+                with st.spinner("Generating answer..."):
+                    answer = ask_gemini(user_question, retrieved_chunks, gemini_key)
 
-            render_assistant_bubble(answer, retrieved_chunks)
+                render_assistant_bubble(answer, retrieved_chunks)
 
-            active["chat_history"].append({"role": "user", "content": user_question})
-            active["chat_history"].append({"role": "assistant", "content": answer, "sources": retrieved_chunks})
+                active["chat_history"].append({"role": "user", "content": user_question})
+                active["chat_history"].append({"role": "assistant", "content": answer, "sources": retrieved_chunks})
+
+            except Exception as e:
+                st.error(f"Something went wrong while generating the answer: {e}")
